@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      max-active: 10
+  profiles:
+    active: dev
+
+Mybatis:
+  mapper-locations: classpath:mappers/*.xml
+
+knife4j:
+  enable: true
+
