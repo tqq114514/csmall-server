@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 @Data
 public class AttributeTemplateUpdateInfoParam implements Serializable {
     @NotNull(message = "修改属性模板失败，必须提交属性模板名称")

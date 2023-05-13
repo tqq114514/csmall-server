@@ -3,8 +3,10 @@ package com.tqq.csmall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.BrandMapper;
+import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.entity.Brand;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
+import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.service.IBrandService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +50,27 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除品牌信息业务】，参数：{}",id);
-        brandMapper.deleteById(id);
+        int rows = brandMapper.deleteById(id);
+        if (rows != 1){
+            String message = "删除品牌信息失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    @Override
+    public void updateBrandById(Long id, BrandUpdateInfoParam brandUpdateInfoParam) {
+        log.debug("开始处理【修改品牌信息模板】的业务，ID：{}，新数据：{}", id, brandUpdateInfoParam);
+
+        Brand brand = new Brand();
+        BeanUtils.copyProperties(brandUpdateInfoParam,brand);
+        brand.setId(id);
+        brand.setGmtModified(LocalDateTime.now());
+        int rows = brandMapper.updateById(brand);
+        if (rows != 1){
+            String message = "修改品牌信息失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
+import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import com.tqq.csmall.product.service.ICategoryService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
@@ -43,6 +45,17 @@ public class CategoryController {
     public JsonResult delete(@Range(min = 1,message = "Id值不合法") @RequestParam Long id){
         log.debug("开始处理【根据ID删除分类信息的请求】,参数为:{}",id);
         iCategoryService.delete(id);
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/update")
+    @ApiOperation("根据id修改分类的值")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id",value = "分类信息id",required = true,dataType = "long")
+    public JsonResult updateCategoryById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
+                                                  @Valid CategoryUpdateInfoParam categoryUpdateInfoParam) {
+        log.debug("开始处理【根据id修改分类的值】的请求，ID：{}，新数据：{}", id, categoryUpdateInfoParam);
+        iCategoryService.updateCategoryById(id, categoryUpdateInfoParam);
         return JsonResult.ok();
     }
 

@@ -3,8 +3,10 @@ package com.tqq.csmall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.CategoryMapper;
+import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.entity.Category;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
+import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import com.tqq.csmall.product.service.ICategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +44,27 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除分类信息业务】，参数：{}",id);
-        categoryMapper.deleteById(id);
+        int rows = categoryMapper.deleteById(id);
+        if (rows != 1){
+            String message = "删除分类信息失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    @Override
+    public void updateCategoryById(Long id, CategoryUpdateInfoParam categoryUpdateInfoParam) {
+        log.debug("开始处理【修改分类模板】的业务，ID：{}，新数据：{}", id, categoryUpdateInfoParam);
+
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryUpdateInfoParam,category);
+        category.setId(id);
+        category.setGmtModified(LocalDateTime.now());
+        int rows = categoryMapper.updateById(category);
+        if (rows != 1){
+            String message = "修改分类模板失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
     }
 }

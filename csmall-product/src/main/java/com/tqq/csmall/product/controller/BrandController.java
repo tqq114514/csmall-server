@@ -1,7 +1,9 @@
 package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
+import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.service.IBrandService;
 import com.tqq.csmall.product.service.impl.BrandServiceImpl;
 import com.tqq.csmall.product.web.JsonResult;
@@ -42,6 +44,17 @@ public class BrandController {
     public JsonResult delete(@Range(min = 1,message = "Id值不合法") @RequestParam Long id){
         log.debug("开始处理【根据ID删除品牌信息的请求】,参数为:{}",id);
         iBrandService.delete(id);
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/update")
+    @ApiOperation("根据id修改品牌的信息")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id",value = "品牌信息id",required = true,dataType = "long")
+    public JsonResult updateBrandById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
+                                                  @Valid BrandUpdateInfoParam brandUpdateInfoParam) {
+        log.debug("开始处理【根据id修改品牌的信息】的请求，ID：{}，新数据：{}", id, brandUpdateInfoParam);
+        iBrandService.updateBrandById(id, brandUpdateInfoParam);
         return JsonResult.ok();
     }
 }
