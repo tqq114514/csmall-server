@@ -44,4 +44,10 @@ public class BrandServiceImpl implements IBrandService {
         brandMapper.insert(brand);
         log.debug("将新的品牌信息数据写入到数据库，完成！");
     }
+
+    @Override
+    public void delete(Long id) {
+        log.debug("开始处理【根据id删除品牌信息业务】，参数：{}",id);
+        brandMapper.deleteById(id);
+    }
 }

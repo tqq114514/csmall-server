@@ -38,4 +38,10 @@ public class CategoryServiceImpl implements ICategoryService {
         categoryMapper.insert(category);
         log.debug("将新的分类信息数据写入到数据库，完成！");
     }
+
+    @Override
+    public void delete(Long id) {
+        log.debug("开始处理【根据id删除分类信息业务】，参数：{}",id);
+        categoryMapper.deleteById(id);
+    }
 }

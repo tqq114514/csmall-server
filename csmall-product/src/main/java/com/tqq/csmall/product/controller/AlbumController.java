@@ -55,9 +55,11 @@ public class AlbumController {
         throw new RuntimeException("to do");
     }*/
 
-    @ApiImplicitParam(name = "albumId",value = "相册Id",required = true,dataType = "long")
-    public String delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long albumId){
-        throw new RuntimeException("to do");
+    @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
+    public JsonResult delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long id){
+        log.debug("开始处理【根据ID删除相册】的请求,参数：{}",id);
+        albumService.delete(id);
+        return JsonResult.ok();
     }
 
     @PostMapping("/update")

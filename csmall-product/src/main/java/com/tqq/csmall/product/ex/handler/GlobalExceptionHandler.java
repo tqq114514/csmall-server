@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         jsonResult.setMessage(exception.getMessage());*/
         /*return new JsonResult().setState(1).setMessage(exception.getMessage());*/
         /*链式方法解决了代码的可读性问题，解决构造方法多参数时，各参数意义不明确的问题*/
-        return JsonResult.fail(ServiceCode.ERR, exception.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_CONFLICT, exception.getMessage());
     }
 
     @ExceptionHandler
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
         jsonResult.setState(2);
         jsonResult.setMessage(e.getMessage());
         return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR,e.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_BAD_RESPONSE,e.getMessage());
     }
 
     @ExceptionHandler
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
         jsonResult.setState(3);
         jsonResult.setMessage(exception.getMessage());
         return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR, exception.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
         jsonResult.setState(4);
         jsonResult.setMessage(e.getMessage());
         return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR, e.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, e.getMessage());
 
         /*几个错误合并到一起，适合前端弹出信息*/
         /*StringJoiner stringJoiner = new StringJoiner(",","请求参数错误,","!");
@@ -98,7 +98,7 @@ public class GlobalExceptionHandler {
         jsonResult.setState(5);
         jsonResult.setMessage(e.getMessage());
         return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR,e.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST,e.getMessage());
     }
 
     @ExceptionHandler
@@ -112,6 +112,6 @@ public class GlobalExceptionHandler {
         jsonResult.setState(99);
         jsonResult.setMessage(throwable.getMessage());
         return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR,throwable.getMessage());
+        return JsonResult.fail(ServiceCode.ERR_UNKNOWN,throwable.getMessage());
     }
 }

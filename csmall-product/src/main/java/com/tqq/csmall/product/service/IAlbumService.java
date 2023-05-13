@@ -4,4 +4,5 @@ import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 
 public interface IAlbumService {
     void addNew(AlbumAddNewParam albumAddNewParam);
+    void delete(Long id);
 }
