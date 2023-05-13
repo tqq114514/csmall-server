@@ -3,8 +3,10 @@ package com.tqq.csmall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.AttributeTemplateMapper;
+import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
+import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.service.IAttributeTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -46,6 +48,27 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除属性模板业务】，参数：{}",id);
-        attributeTemplateMapper.deleteById(id);
+        int rows = attributeTemplateMapper.deleteById(id);
+        if (rows != 1){
+            String message = "删除属性模板失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+    }
+
+    @Override
+    public void updateAttributeTemplateById(Long id, AttributeTemplateUpdateInfoParam attributeTemplateUpdateInfoParam) {
+        log.debug("开始处理【修改属性模板】的业务，ID：{}，新数据：{}", id, attributeTemplateUpdateInfoParam);
+
+        AttributeTemplate attributeTemplate = new AttributeTemplate();
+        BeanUtils.copyProperties(attributeTemplateUpdateInfoParam,attributeTemplate);
+        attributeTemplate.setId(id);
+        attributeTemplate.setGmtModified(LocalDateTime.now());
+        int rows = attributeTemplateMapper.updateById(attributeTemplate);
+        if (rows != 1){
+            String message = "修改属性模板失败，服务器忙，请稍后再试";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
     }
 }

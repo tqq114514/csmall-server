@@ -7,7 +7,8 @@ public enum ServiceCode {
     ERR_BAD_REQUEST(40000),
     ERR_CONFLICT(40900),
     ERR_BAD_RESPONSE(50000),
-    ERR_UNKNOWN(99900);
+    ERR_UNKNOWN(99900),
+    ERR_DELETE(50800);
 
     private Integer value;
     /*enum里面构造方法是私有的*/

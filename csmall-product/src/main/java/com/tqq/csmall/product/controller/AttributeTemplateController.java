@@ -2,7 +2,9 @@ package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
+import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.service.IAttributeTemplateService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
@@ -13,6 +15,8 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Api(tags = "04属性模板管理模块")
 @RestController
@@ -39,6 +43,17 @@ public class AttributeTemplateController {
     public JsonResult delete(@Range(min = 1,message = "Id值不合法") @RequestParam Long id){
         log.debug("开始处理【根据ID删除属性模板的请求】,参数为:{}",id);
         iAttributeTemplateService.delete(id);
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/update")
+    @ApiOperation("根据id修改属性模板的值")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id",value = "属性模板id",required = true,dataType = "long")
+    public JsonResult updateAttributeTemplateById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
+                                                  @Valid AttributeTemplateUpdateInfoParam attributeTemplateUpdateInfoParam) {
+        log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, attributeTemplateUpdateInfoParam);
+        iAttributeTemplateService.updateAttributeTemplateById(id, attributeTemplateUpdateInfoParam);
         return JsonResult.ok();
     }
 }

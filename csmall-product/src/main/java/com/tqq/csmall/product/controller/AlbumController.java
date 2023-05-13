@@ -2,6 +2,7 @@ package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
+import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.service.IAlbumService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
@@ -65,8 +66,12 @@ public class AlbumController {
     @PostMapping("/update")
     @ApiOperation("修改相册")
     @ApiOperationSupport(order =300)
-    public String update() {
-        throw new NullPointerException("修改出错了，导致了空指针异常！");
+    @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
+    public JsonResult updateInfoById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
+                                     @Valid AlbumUpdateInfoParam albumUpdateInfoParam) {
+        log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, albumUpdateInfoParam);
+        albumService.updateInfoById(id, albumUpdateInfoParam);
+        return JsonResult.ok();
     }
 
     @PostMapping("/list")
