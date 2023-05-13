@@ -2,6 +2,7 @@ package com.tqq.csmall.product.pojo.param;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,5 +20,6 @@ public class AttributeTemplateUpdateInfoParam implements Serializable {
     private String keywords;
     @NotNull(message = "修改属性模板失败，必须提交属性模板的排序序号")
     @ApiModelProperty(value = "属性模板排序序号",required = true,example = "12")
+    @Range(max=99,min = 1,message = "添加序号失败，值必须位于1-99之间")
     private Integer sort;
 }
