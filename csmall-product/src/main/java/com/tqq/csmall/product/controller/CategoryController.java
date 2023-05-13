@@ -1,7 +1,6 @@
 package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import com.tqq.csmall.product.service.ICategoryService;
@@ -49,7 +48,7 @@ public class CategoryController {
     }
 
     @PostMapping("/update")
-    @ApiOperation("根据id修改分类的值")
+    @ApiOperation("根据id修改分类信息")
     @ApiOperationSupport(order = 300)
     @ApiImplicitParam(name = "id",value = "分类信息id",required = true,dataType = "long")
     public JsonResult updateCategoryById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
