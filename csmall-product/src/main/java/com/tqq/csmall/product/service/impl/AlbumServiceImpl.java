@@ -7,7 +7,6 @@ import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.service.IAlbumService;
-import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,18 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除相册业务】，参数：{}",id);
+
+        QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = albumMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "删除相册失败,相册信息不存在！";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+
         int rows = albumMapper.deleteById(id);
         if (rows != 1){
             String message = "删除相册失败，服务器忙，请稍后再试";
@@ -65,6 +76,17 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public void updateInfoById(Long id, AlbumUpdateInfoParam albumUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的业务，ID：{}，新数据：{}", id, albumUpdateInfoParam);
+
+        QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = albumMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "修改相册信息失败,相册信息不存在！";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
 
         Album album = new Album();
         BeanUtils.copyProperties(albumUpdateInfoParam,album);

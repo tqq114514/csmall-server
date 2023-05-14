@@ -3,7 +3,6 @@ package com.tqq.csmall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.CategoryMapper;
-import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.entity.Category;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
@@ -44,22 +43,38 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除分类信息业务】，参数：{}",id);
-        int rows = categoryMapper.deleteById(id);
-        if (rows != 1){
-            String message = "删除分类信息失败，服务器忙，请稍后再试";
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_category where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = categoryMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "删除类别失败,类别不存在！";
             log.warn(message);
             throw new ServiceException(message);
         }
+        int rows = categoryMapper.deleteById(id);
+        log.debug("删除数据成功，受影响行数：{}",rows);
     }
 
     @Override
     public void updateCategoryById(Long id, CategoryUpdateInfoParam categoryUpdateInfoParam) {
         log.debug("开始处理【修改分类模板】的业务，ID：{}，新数据：{}", id, categoryUpdateInfoParam);
 
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_category where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = categoryMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "修改类别失败,类别不存在！";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+
         Category category = new Category();
         BeanUtils.copyProperties(categoryUpdateInfoParam,category);
         category.setId(id);
-        category.setGmtModified(LocalDateTime.now());
         int rows = categoryMapper.updateById(category);
         if (rows != 1){
             String message = "修改分类模板失败，服务器忙，请稍后再试";

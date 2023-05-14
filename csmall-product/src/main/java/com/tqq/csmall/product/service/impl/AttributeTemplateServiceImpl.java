@@ -3,7 +3,6 @@ package com.tqq.csmall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.AttributeTemplateMapper;
-import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
@@ -48,6 +47,17 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
     @Override
     public void delete(Long id) {
         log.debug("开始处理【根据id删除属性模板业务】，参数：{}",id);
+        QueryWrapper<AttributeTemplate> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_attribute_template where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = attributeTemplateMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "删除属性模板失败,属性模板信息不存在！";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+
         int rows = attributeTemplateMapper.deleteById(id);
         if (rows != 1){
             String message = "删除属性模板失败，服务器忙，请稍后再试";
@@ -60,10 +70,20 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
     public void updateAttributeTemplateById(Long id, AttributeTemplateUpdateInfoParam attributeTemplateUpdateInfoParam) {
         log.debug("开始处理【修改属性模板】的业务，ID：{}，新数据：{}", id, attributeTemplateUpdateInfoParam);
 
+        QueryWrapper<AttributeTemplate> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_attribute_template where id = #{id}*/
+        queryWrapper.eq("id",id);
+        int countById = attributeTemplateMapper.selectCount(queryWrapper);
+        if (countById==0){
+            String message = "修改属性模板失败,属性模板信息不存在！";
+            log.warn(message);
+            throw new ServiceException(message);
+        }
+
         AttributeTemplate attributeTemplate = new AttributeTemplate();
         BeanUtils.copyProperties(attributeTemplateUpdateInfoParam,attributeTemplate);
         attributeTemplate.setId(id);
-        attributeTemplate.setGmtModified(LocalDateTime.now());
         int rows = attributeTemplateMapper.updateById(attributeTemplate);
         if (rows != 1){
             String message = "修改属性模板失败，服务器忙，请稍后再试";
