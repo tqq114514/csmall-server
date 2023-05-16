@@ -7,14 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @SpringBootTest
 public class AlbumMapperTests {
 
     @Autowired
-    AlbumMapper mapper;
+   AlbumMapper mapper;
 
     @Test
     void insert(){
@@ -47,7 +46,13 @@ public class AlbumMapperTests {
         int rows =mapper.deleteBatchIds(list);
         System.out.println("删除数据完成，受影响的行数：" + rows);
     }
-    void select(){
+    @Test
+    void list(){
+        List<?> list = mapper.albumList();
+        System.out.println("查询列表完成，数据量为："+list.size());
+        for (Object items:list){
+            System.out.println(items);
+        }
 
     }
 

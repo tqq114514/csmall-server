@@ -1,4 +1,4 @@
-package com.tqq.csmall.product.service.impl;
+package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
@@ -6,7 +6,7 @@ import com.tqq.csmall.product.mapper.CategoryMapper;
 import com.tqq.csmall.product.pojo.entity.Category;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
-import com.tqq.csmall.product.service.ICategoryService;
+import com.tqq.csmall.product.services.ICategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

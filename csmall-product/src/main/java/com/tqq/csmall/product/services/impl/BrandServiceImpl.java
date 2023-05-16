@@ -1,4 +1,4 @@
-package com.tqq.csmall.product.service.impl;
+package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
@@ -6,7 +6,7 @@ import com.tqq.csmall.product.mapper.BrandMapper;
 import com.tqq.csmall.product.pojo.entity.Brand;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
-import com.tqq.csmall.product.service.IBrandService;
+import com.tqq.csmall.product.services.IBrandService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;

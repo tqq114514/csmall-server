@@ -3,7 +3,7 @@ package com.tqq.csmall.product.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
-import com.tqq.csmall.product.service.ICategoryService;
+import com.tqq.csmall.product.services.ICategoryService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

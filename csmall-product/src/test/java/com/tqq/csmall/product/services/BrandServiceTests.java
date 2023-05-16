@@ -1,9 +1,8 @@
-package com.tqq.csmall.product.service;
+package com.tqq.csmall.product.services;
 
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
-import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

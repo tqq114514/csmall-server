@@ -1,4 +1,4 @@
-package com.tqq.csmall.product.service.impl;
+package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
@@ -6,7 +6,7 @@ import com.tqq.csmall.product.mapper.AlbumMapper;
 import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
-import com.tqq.csmall.product.service.IAlbumService;
+import com.tqq.csmall.product.services.IAlbumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

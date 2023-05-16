@@ -1,4 +1,4 @@
-package com.tqq.csmall.product.service;
+package com.tqq.csmall.product.services;
 
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;

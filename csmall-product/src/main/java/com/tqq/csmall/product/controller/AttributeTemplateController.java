@@ -1,11 +1,9 @@
 package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.tqq.csmall.product.ex.ServiceException;
-import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
-import com.tqq.csmall.product.service.IAttributeTemplateService;
+import com.tqq.csmall.product.services.IAttributeTemplateService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
