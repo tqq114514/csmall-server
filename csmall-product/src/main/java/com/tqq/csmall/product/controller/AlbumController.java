@@ -35,7 +35,7 @@ public class AlbumController {
     @RequestMapping(value = "/add-new",method = RequestMethod.POST)
     @ApiOperation(value = "添加相册")
     @ApiOperationSupport(order = 100)
-    public JsonResult addNew(@Valid AlbumAddNewParam albumAddNewParam){
+    public JsonResult addNew(@Valid @RequestBody AlbumAddNewParam albumAddNewParam){
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewParam);
         albumService.addNew(albumAddNewParam);
         return JsonResult.ok();
@@ -68,7 +68,7 @@ public class AlbumController {
     @ApiOperationSupport(order =300)
     @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
     public JsonResult updateInfoById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
-                                     @Valid AlbumUpdateInfoParam albumUpdateInfoParam) {
+                                     @Valid @RequestBody AlbumUpdateInfoParam albumUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, albumUpdateInfoParam);
         albumService.updateInfoById(id, albumUpdateInfoParam);
         return JsonResult.ok();

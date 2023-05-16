@@ -30,7 +30,7 @@ public class AttributeTemplateController {
     @PostMapping("/add-new")
     @ApiOperation("添加属性模板")
     @ApiOperationSupport(order = 100)
-    public JsonResult addNew(AttributeTemplateAddNewParam attributeTemplateAddNewParam){
+    public JsonResult addNew(@RequestBody AttributeTemplateAddNewParam attributeTemplateAddNewParam){
         log.debug("开始处理【添加属性模板】的请求，参数：{}", attributeTemplateAddNewParam);
         iAttributeTemplateService.addNew(attributeTemplateAddNewParam);
         return JsonResult.ok();

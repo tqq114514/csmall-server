@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 @Data
-@Accessors(chain = true)
+@Accessors(chain = true) //链式方法，可以不手动更改set方法，使set方法返回JsonResult,供Controller反复打点调用方法
 public class JsonResult implements Serializable {
     private Integer state;
     private String message;
