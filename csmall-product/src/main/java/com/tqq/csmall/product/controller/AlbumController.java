@@ -46,9 +46,7 @@ public class AlbumController {
     /*该请求没有封装参数，需要使用ApiImplicitParam添加在方法上，必须配置name属性与
      * 方法属性值相等*/
     /*http://localhost/album/delete?albumId=1&userId=1*/
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    @ApiOperation("根据ID删除相册")
-    @ApiOperationSupport(order = 200)
+
 
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "albumId",value = "相册Id",required = true,dataType = "long"),
@@ -57,7 +55,9 @@ public class AlbumController {
     public String delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long albumId, Long userId){
         throw new RuntimeException("to do");
     }*/
-
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ApiOperation("根据ID删除相册")
+    @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
     public JsonResult delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long id){
         log.debug("开始处理【根据ID删除相册】的请求,参数：{}",id);
@@ -70,7 +70,7 @@ public class AlbumController {
     @ApiOperationSupport(order =300)
     @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
     public JsonResult updateInfoById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
-                                     @Valid @RequestBody AlbumUpdateInfoParam albumUpdateInfoParam) {
+                                     @Valid  AlbumUpdateInfoParam albumUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, albumUpdateInfoParam);
         ialbumService.updateInfoById(id, albumUpdateInfoParam);
         return JsonResult.ok();

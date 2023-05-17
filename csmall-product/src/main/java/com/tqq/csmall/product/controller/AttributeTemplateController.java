@@ -28,7 +28,7 @@ public class AttributeTemplateController {
     @PostMapping("/add-new")
     @ApiOperation("添加属性模板")
     @ApiOperationSupport(order = 100)
-    public JsonResult addNew(@Valid @RequestBody AttributeTemplateAddNewParam attributeTemplateAddNewParam){
+    public JsonResult addNew(@Valid  AttributeTemplateAddNewParam attributeTemplateAddNewParam){
         log.debug("开始处理【添加属性模板】的请求，参数：{}", attributeTemplateAddNewParam);
         iAttributeTemplateService.addNew(attributeTemplateAddNewParam);
         return JsonResult.ok();
@@ -49,7 +49,7 @@ public class AttributeTemplateController {
     @ApiOperationSupport(order = 300)
     @ApiImplicitParam(name = "id",value = "属性模板id",required = true,dataType = "long")
     public JsonResult updateAttributeTemplateById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
-                                                  @Valid @RequestBody AttributeTemplateUpdateInfoParam attributeTemplateUpdateInfoParam) {
+                                                  @Valid  AttributeTemplateUpdateInfoParam attributeTemplateUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, attributeTemplateUpdateInfoParam);
         iAttributeTemplateService.updateAttributeTemplateById(id, attributeTemplateUpdateInfoParam);
         return JsonResult.ok();
