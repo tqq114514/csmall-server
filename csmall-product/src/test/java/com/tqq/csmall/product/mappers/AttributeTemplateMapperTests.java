@@ -1,6 +1,7 @@
-package com.tqq.csmall.product.mapper;
+package com.tqq.csmall.product.mappers;
 
 
+import com.tqq.csmall.product.mapper.AttributeTemplateMapper;
 import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

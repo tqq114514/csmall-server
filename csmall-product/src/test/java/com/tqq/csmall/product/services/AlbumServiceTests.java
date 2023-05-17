@@ -35,6 +35,17 @@ public class AlbumServiceTests {
     }
 
     @Test
+    void delete(){
+        Long id = 11L;
+        try {
+            service.delete(id);
+            System.out.println("删除数据完成");
+        }catch (ServiceException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     void list() {
         Integer pageNum = 1;
         Integer pageSize = 10;

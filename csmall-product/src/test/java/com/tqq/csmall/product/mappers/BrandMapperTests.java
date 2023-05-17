@@ -1,5 +1,6 @@
-package com.tqq.csmall.product.mapper;
+package com.tqq.csmall.product.mappers;
 
+import com.tqq.csmall.product.mapper.BrandMapper;
 import com.tqq.csmall.product.pojo.entity.Brand;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.AlbumMapper;
+import com.tqq.csmall.product.mapper.PictureMapper;
 import com.tqq.csmall.product.pojo.entity.Album;
+import com.tqq.csmall.product.pojo.entity.Picture;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
@@ -25,6 +27,8 @@ import java.util.List;
 public class AlbumServiceImpl implements IAlbumService {
     @Autowired
     private AlbumMapper albumMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
 
     @Override
     public void addNew(AlbumAddNewParam albumAddNewParam) {
@@ -64,18 +68,25 @@ public class AlbumServiceImpl implements IAlbumService {
         /*select count(*) from pms_album where id = #{id}*/
         queryWrapper.eq("id", id);
         int countById = albumMapper.selectCount(queryWrapper);
+        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countById);
         if (countById == 0) {
-            String message = "删除相册失败,相册信息不存在！";
+            String message = "删除相册失败,请求的相册id不存在！";
             log.warn(message);
             throw new ServiceException(message);
         }
 
-        int rows = albumMapper.deleteById(id);
-        if (rows != 1) {
-            String message = "删除相册失败，服务器忙，请稍后再试";
+        /*检测相册中是否关联了图片*/
+        QueryWrapper<Picture> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("album_id",id);
+        int countByAlbumId = pictureMapper.selectCount(queryWrapper1);
+        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countById);
+        if (countByAlbumId>0){
+            String message = "删除相册不予以执行，相册中有图片未处理";
             log.warn(message);
             throw new ServiceException(message);
         }
+
+        albumMapper.deleteById(id);
 
     }
 

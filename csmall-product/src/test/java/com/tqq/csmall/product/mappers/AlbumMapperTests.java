@@ -1,5 +1,6 @@
-package com.tqq.csmall.product.mapper;
+package com.tqq.csmall.product.mappers;
 
+import com.tqq.csmall.product.mapper.AlbumMapper;
 import com.tqq.csmall.product.pojo.entity.Album;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 public class AlbumMapperTests {
 
     @Autowired
-   AlbumMapper mapper;
+    AlbumMapper mapper;
 
     @Test
     void insert(){
