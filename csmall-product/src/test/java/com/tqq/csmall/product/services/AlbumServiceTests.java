@@ -3,9 +3,12 @@ package com.tqq.csmall.product.services;
 
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
+import com.tqq.csmall.product.pojo.vo.PageData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 public class AlbumServiceTests {
@@ -28,6 +31,22 @@ public class AlbumServiceTests {
         }catch (Throwable e){
             System.out.println("出现了某种异常");
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void list() {
+        Integer pageNum = 1;
+        Integer pageSize = 10;
+        PageData<?> pageData = service.list(pageNum, pageSize);
+        List<?> list = pageData.getList();
+        System.out.println("查询列表完成，结果集中的数据量：" + list.size());
+        System.out.println("总记录数：" + pageData.getTotal());
+        System.out.println("当前页码：" + pageData.getCurrentPage());
+        System.out.println("最大页码：" + pageData.getMaxPage());
+        System.out.println("每页记录数：" + pageData.getPageSize());
+        for (Object item : list) {
+            System.out.println(item);
         }
     }
 

@@ -3,10 +3,13 @@ package com.tqq.csmall.product.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
+import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
+import com.tqq.csmall.product.pojo.vo.PageData;
 import com.tqq.csmall.product.services.IAlbumService;
 import com.tqq.csmall.product.web.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -25,7 +28,7 @@ import javax.validation.Valid;
 public class AlbumController {
 
     @Autowired
-    private IAlbumService albumService;
+    private IAlbumService ialbumService;
 
 
     /*@RequestMapping(value = "/add-new",method = {RequestMethod.POST,RequestMethod.GET})*/
@@ -36,7 +39,7 @@ public class AlbumController {
     @ApiOperationSupport(order = 100)
     public JsonResult addNew(@Valid @RequestBody AlbumAddNewParam albumAddNewParam){
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewParam);
-        albumService.addNew(albumAddNewParam);
+        ialbumService.addNew(albumAddNewParam);
         return JsonResult.ok();
     }
 
@@ -58,7 +61,7 @@ public class AlbumController {
     @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
     public JsonResult delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long id){
         log.debug("开始处理【根据ID删除相册】的请求,参数：{}",id);
-        albumService.delete(id);
+        ialbumService.delete(id);
         return JsonResult.ok();
     }
 
@@ -69,15 +72,23 @@ public class AlbumController {
     public JsonResult updateInfoById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id,
                                      @Valid @RequestBody AlbumUpdateInfoParam albumUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的请求，ID：{}，新数据：{}", id, albumUpdateInfoParam);
-        albumService.updateInfoById(id, albumUpdateInfoParam);
+        ialbumService.updateInfoById(id, albumUpdateInfoParam);
         return JsonResult.ok();
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("查询相册列表")
     @ApiOperationSupport(order =400)
-    public String list() {
-        throw new RuntimeException("查询出错了，导致了RuntimeException！");
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum",value = "页码",paramType = "querry")
+    })
+    public JsonResult list(@Range(min = 1,message = "查询相册列表失败，提供的页码值有误！") Integer pageNum) {
+        log.debug("开始处理【查询相册列表】的请求，页码：{}", pageNum);
+        if (pageNum == null || pageNum < 1 ){
+            pageNum = 1;
+        }
+        PageData<AlbumListItemsVO> pageData = ialbumService.list(pageNum);
+        return JsonResult.ok(pageData);
     }
 }
 
