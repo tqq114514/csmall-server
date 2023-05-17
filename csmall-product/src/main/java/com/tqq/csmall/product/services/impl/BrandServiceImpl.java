@@ -8,6 +8,7 @@ import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.services.IBrandService;
 
+import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class BrandServiceImpl implements IBrandService {
         if (countByName > 0) {
             String message = "添加品牌名称失败，品牌名称必须唯一！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         Brand brand = new Brand();
@@ -57,15 +58,11 @@ public class BrandServiceImpl implements IBrandService {
         if (countById==0){
             String message = "删除品牌失败,品牌信息不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
-        int rows = brandMapper.deleteById(id);
-        if (rows != 1){
-            String message = "删除品牌信息失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        brandMapper.deleteById(id);
+
     }
 
     @Override
@@ -80,17 +77,13 @@ public class BrandServiceImpl implements IBrandService {
         if (countById==0){
             String message = "修改品牌失败,品牌信息不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandUpdateInfoParam,brand);
         brand.setId(id);
-        int rows = brandMapper.updateById(brand);
-        if (rows != 1){
-            String message = "修改品牌信息失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        brandMapper.updateById(brand);
+
     }
 }

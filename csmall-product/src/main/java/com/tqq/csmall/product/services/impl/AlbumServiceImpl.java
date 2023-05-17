@@ -6,14 +6,19 @@ import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.AlbumMapper;
 import com.tqq.csmall.product.mapper.PictureMapper;
+import com.tqq.csmall.product.mapper.SKUMapper;
+import com.tqq.csmall.product.mapper.SPUMapper;
 import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.entity.Picture;
+import com.tqq.csmall.product.pojo.entity.SKU;
+import com.tqq.csmall.product.pojo.entity.SPU;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
 import com.tqq.csmall.product.pojo.vo.PageData;
 import com.tqq.csmall.product.services.IAlbumService;
 import com.tqq.csmall.product.util.PageInfoToPageDataConverter;
+import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,10 @@ public class AlbumServiceImpl implements IAlbumService {
     private AlbumMapper albumMapper;
     @Autowired
     private PictureMapper pictureMapper;
+    @Autowired
+    private SKUMapper skuMapper;
+    @Autowired
+    private SPUMapper spuMapper;
 
     @Override
     public void addNew(AlbumAddNewParam albumAddNewParam) {
@@ -44,7 +53,7 @@ public class AlbumServiceImpl implements IAlbumService {
             String message = "添加相册失败，相册名称已经被占用！";
             /*System.out.println(message);*/
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         // 将相册数据写入到数据库中
@@ -72,7 +81,7 @@ public class AlbumServiceImpl implements IAlbumService {
         if (countById == 0) {
             String message = "删除相册失败,请求的相册id不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
         /*检测相册中是否关联了图片*/
@@ -83,7 +92,27 @@ public class AlbumServiceImpl implements IAlbumService {
         if (countByAlbumId>0){
             String message = "删除相册不予以执行，相册中有图片未处理";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
+        /*spu,sku中也有字段关联到了相册，需要检测一下对应id的sku和spu是否存在*/
+        QueryWrapper<SPU> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("album_id",id);
+        int countBySPUId = spuMapper.selectCount(queryWrapper2);
+        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countBySPUId);
+        if (countBySPUId>0){
+            String message = "删除相册不予以执行，SPU中有关联数据未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+        QueryWrapper<SKU> queryWrapper3 = new QueryWrapper<>();
+        queryWrapper3.eq("album_id",id);
+        int countBySKUId = skuMapper.selectCount(queryWrapper3);
+        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countBySKUId);
+        if (countBySKUId>0){
+            String message = "删除相册不予以执行，SKU中有关联数据未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         albumMapper.deleteById(id);
@@ -102,19 +131,15 @@ public class AlbumServiceImpl implements IAlbumService {
         if (countById == 0) {
             String message = "修改相册信息失败,相册信息不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
         Album album = new Album();
         BeanUtils.copyProperties(albumUpdateInfoParam, album);
         album.setId(id);
         album.setGmtModified(LocalDateTime.now());
-        int rows = albumMapper.updateById(album);
-        if (rows != 1) {
-            String message = "修改相册失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        albumMapper.updateById(album);
+
     }
 
     @Override

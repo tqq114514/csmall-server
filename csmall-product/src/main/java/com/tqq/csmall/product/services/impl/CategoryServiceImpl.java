@@ -7,6 +7,7 @@ import com.tqq.csmall.product.pojo.entity.Category;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import com.tqq.csmall.product.services.ICategoryService;
+import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements ICategoryService {
         if (countByName > 0) {
             String message = "添加分类名称失败，分类名称必须唯一！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         Category category = new Category();
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements ICategoryService {
         if (countById==0){
             String message = "删除类别失败,类别不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
         int rows = categoryMapper.deleteById(id);
         log.debug("删除数据成功，受影响行数：{}",rows);
@@ -69,17 +70,12 @@ public class CategoryServiceImpl implements ICategoryService {
         if (countById==0){
             String message = "修改类别失败,类别不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
         Category category = new Category();
         BeanUtils.copyProperties(categoryUpdateInfoParam,category);
         category.setId(id);
-        int rows = categoryMapper.updateById(category);
-        if (rows != 1){
-            String message = "修改分类模板失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        categoryMapper.updateById(category);
     }
 }

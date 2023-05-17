@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         jsonResult.setMessage(exception.getMessage());*/
         /*return new JsonResult().setState(1).setMessage(exception.getMessage());*/
         /*链式方法解决了代码的可读性问题，解决构造方法多参数时，各参数意义不明确的问题*/
-        return JsonResult.fail(ServiceCode.ERR_CONFLICT, exception.getMessage());
+        return JsonResult.fail(exception.getServiceCode(), exception.getMessage());
     }
 
     @ExceptionHandler

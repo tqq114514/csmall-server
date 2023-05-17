@@ -7,6 +7,7 @@ import com.tqq.csmall.product.pojo.entity.AttributeTemplate;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.services.IAttributeTemplateService;
+import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         if (countByName > 0) {
             String message = "添加属性模板失败，属性模板名称已经被占用！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         // 将属性模板数据写入到数据库中
@@ -55,15 +56,11 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         if (countById==0){
             String message = "删除属性模板失败,属性模板信息不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
-        int rows = attributeTemplateMapper.deleteById(id);
-        if (rows != 1){
-            String message = "删除属性模板失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        attributeTemplateMapper.deleteById(id);
+
     }
 
     @Override
@@ -78,17 +75,13 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         if (countById==0){
             String message = "修改属性模板失败,属性模板信息不存在！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
         AttributeTemplate attributeTemplate = new AttributeTemplate();
         BeanUtils.copyProperties(attributeTemplateUpdateInfoParam,attributeTemplate);
         attributeTemplate.setId(id);
-        int rows = attributeTemplateMapper.updateById(attributeTemplate);
-        if (rows != 1){
-            String message = "修改属性模板失败，服务器忙，请稍后再试";
-            log.warn(message);
-            throw new ServiceException(message);
-        }
+        attributeTemplateMapper.updateById(attributeTemplate);
+
     }
 }

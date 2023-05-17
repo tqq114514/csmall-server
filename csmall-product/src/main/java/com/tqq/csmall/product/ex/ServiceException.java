@@ -1,11 +1,17 @@
 package com.tqq.csmall.product.ex;
 
+import com.tqq.csmall.product.web.ServiceCode;
+import lombok.Getter;
+
 public class ServiceException extends RuntimeException {
     public ServiceException() {
     }
 
-    public ServiceException(String message) {
+    @Getter
+    private ServiceCode serviceCode;
+    public ServiceException(ServiceCode serviceCode ,String message) {
         super(message);
+        this.serviceCode = serviceCode;
     }
 
     public ServiceException(String message, Throwable cause) {
