@@ -10,4 +10,10 @@
         ORDER BY sort DESC ,id DESC
     </select>
 
+    <select id="getStandardById" resultType="com.tqq.csmall.product.pojo.vo.AlbumStandardVO">
+        SELECT id, name, description, sort
+        FROM mall_pms.pms_album
+        WHERE id=#{id}
+    </select>
+
 </mapper>

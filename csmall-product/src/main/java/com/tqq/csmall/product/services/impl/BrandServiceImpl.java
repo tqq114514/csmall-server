@@ -6,7 +6,6 @@ import com.tqq.csmall.product.mapper.BrandCategoryMapper;
 import com.tqq.csmall.product.mapper.BrandMapper;
 import com.tqq.csmall.product.pojo.entity.Brand;
 import com.tqq.csmall.product.pojo.entity.BrandCategory;
-import com.tqq.csmall.product.pojo.entity.CategoryAttributeTemplate;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.services.IBrandService;

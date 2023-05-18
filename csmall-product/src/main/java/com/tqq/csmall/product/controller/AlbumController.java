@@ -4,6 +4,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
+import com.tqq.csmall.product.pojo.vo.AlbumStandardVO;
 import com.tqq.csmall.product.pojo.vo.PageData;
 import com.tqq.csmall.product.services.IAlbumService;
 import com.tqq.csmall.product.web.JsonResult;
@@ -76,9 +77,20 @@ public class AlbumController {
         return JsonResult.ok();
     }
 
+    @PostMapping("/standard")
+    @ApiOperation("查询单个相册以供修改")
+    @ApiOperationSupport(order =400)
+    @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
+    public JsonResult getStandardById(@Range(min = 1,message = "ID值不合法") @RequestParam Long id) {
+        log.debug("开始处理【根据ID查询相册详情】的请求，参数：{}", id);
+        AlbumStandardVO result = ialbumService.getStandardById(id);
+        return JsonResult.ok(result);
+    }
+
+
     @GetMapping("/list")
     @ApiOperation("查询相册列表")
-    @ApiOperationSupport(order =400)
+    @ApiOperationSupport(order =410)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum",value = "页码",paramType = "querry")
     })

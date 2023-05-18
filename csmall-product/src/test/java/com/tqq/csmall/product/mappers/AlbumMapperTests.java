@@ -61,7 +61,13 @@ public class AlbumMapperTests {
         for (Object items:list){
             System.out.println(items);
         }
+    }
 
+    @Test
+    void getStandardById() {
+        Long id = 1L;
+        Object queryResult = mapper.getStandardById(id);
+        System.out.println("根据【ID=" + id + "】查询数据完成，结果：" + queryResult);
     }
 
 }

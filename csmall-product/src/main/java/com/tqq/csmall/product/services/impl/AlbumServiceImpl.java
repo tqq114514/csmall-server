@@ -15,6 +15,7 @@ import com.tqq.csmall.product.pojo.entity.SPU;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
+import com.tqq.csmall.product.pojo.vo.AlbumStandardVO;
 import com.tqq.csmall.product.pojo.vo.PageData;
 import com.tqq.csmall.product.services.IAlbumService;
 import com.tqq.csmall.product.util.PageInfoToPageDataConverter;
@@ -118,6 +119,18 @@ public class AlbumServiceImpl implements IAlbumService {
 
         albumMapper.deleteById(id);
 
+    }
+
+    @Override
+    public AlbumStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据ID查询相册详情】的业务，参数：{}", id);
+        AlbumStandardVO queryResult = albumMapper.getStandardById(id);
+        if (queryResult==null){
+            String message="查询指定相册不存在，传入的id错误";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
+        }
+        return queryResult;
     }
 
     @Override
