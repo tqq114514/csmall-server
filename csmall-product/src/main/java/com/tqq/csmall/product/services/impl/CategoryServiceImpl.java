@@ -2,8 +2,12 @@ package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.product.mapper.BrandCategoryMapper;
+import com.tqq.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import com.tqq.csmall.product.mapper.CategoryMapper;
+import com.tqq.csmall.product.pojo.entity.BrandCategory;
 import com.tqq.csmall.product.pojo.entity.Category;
+import com.tqq.csmall.product.pojo.entity.CategoryAttributeTemplate;
 import com.tqq.csmall.product.pojo.param.CategoryAddNewParam;
 import com.tqq.csmall.product.pojo.param.CategoryUpdateInfoParam;
 import com.tqq.csmall.product.services.ICategoryService;
@@ -20,6 +24,10 @@ import java.time.LocalDateTime;
 public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    BrandCategoryMapper brandCategoryMapper;
+    @Autowired
+    CategoryAttributeTemplateMapper categoryAttributeTemplateMapper;
     @Override
     public void addNewCategory(CategoryAddNewParam categoryAddNewParam) {
         log.debug("开始处理【添加分类】的业务，参数：{}", categoryAddNewParam);
@@ -54,8 +62,36 @@ public class CategoryServiceImpl implements ICategoryService {
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
-        int rows = categoryMapper.deleteById(id);
-        log.debug("删除数据成功，受影响行数：{}",rows);
+
+        /*to do*/
+        /*检测分类是否关联了品牌分类模板*/
+        QueryWrapper<BrandCategory> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("category_id",id);
+        int countByBrandCategoryId = brandCategoryMapper.selectCount(queryWrapper1);
+        log.debug("根据品牌分类ID统计匹配的分类数量，结果：{}", countByBrandCategoryId);
+        if (countByBrandCategoryId>0){
+            String message = "删除分类不予以执行，分类中有品牌分类未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
+        /*to do*/
+        /*检测分类是否关联了分类属性模板*/
+        QueryWrapper<CategoryAttributeTemplate> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("category_id",id);
+        int countByCategoryAttributeTemplateId = categoryAttributeTemplateMapper.selectCount(queryWrapper2);
+        log.debug("根据属性模板ID统计匹配的相册数量，结果：{}", countByCategoryAttributeTemplateId);
+        if (countByCategoryAttributeTemplateId>0){
+            String message = "删除分类不予以执行，分类中有分类属性模板未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
+
+
+        categoryMapper.deleteById(id);
+
+
     }
 
     @Override

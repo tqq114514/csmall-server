@@ -88,7 +88,7 @@ public class AlbumServiceImpl implements IAlbumService {
         QueryWrapper<Picture> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("album_id",id);
         int countByAlbumId = pictureMapper.selectCount(queryWrapper1);
-        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countById);
+        log.debug("根据相册ID统计匹配的相册数量，结果：{}", countByAlbumId);
         if (countByAlbumId>0){
             String message = "删除相册不予以执行，相册中有图片未处理";
             log.warn(message);
@@ -105,6 +105,7 @@ public class AlbumServiceImpl implements IAlbumService {
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
+
         QueryWrapper<SKU> queryWrapper3 = new QueryWrapper<>();
         queryWrapper3.eq("album_id",id);
         int countBySKUId = skuMapper.selectCount(queryWrapper3);

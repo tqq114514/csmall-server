@@ -2,8 +2,11 @@ package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.product.mapper.BrandCategoryMapper;
 import com.tqq.csmall.product.mapper.BrandMapper;
 import com.tqq.csmall.product.pojo.entity.Brand;
+import com.tqq.csmall.product.pojo.entity.BrandCategory;
+import com.tqq.csmall.product.pojo.entity.CategoryAttributeTemplate;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.services.IBrandService;
@@ -21,6 +24,8 @@ import java.time.LocalDateTime;
 public class BrandServiceImpl implements IBrandService {
     @Autowired
     private  BrandMapper brandMapper;
+    @Autowired
+    private BrandCategoryMapper brandCategoryMapper;
 
     @Override
     public void addNewBrand(BrandAddNewParam brandAddNewParam) {
@@ -59,6 +64,17 @@ public class BrandServiceImpl implements IBrandService {
             String message = "删除品牌失败,品牌信息不存在！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
+        }
+
+        /*检测品牌是否关联了品牌分类模板*/
+        QueryWrapper<BrandCategory> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("brand_id",id);
+        int countByBrandCategoryId = brandCategoryMapper.selectCount(queryWrapper1);
+        log.debug("根据品牌ID统计匹配的品牌数量，结果：{}", countByBrandCategoryId);
+        if (countByBrandCategoryId>0){
+            String message = "删除品牌不予以执行，品牌中有品牌分类未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
         brandMapper.deleteById(id);
