@@ -1,6 +1,8 @@
 package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.AttributeTemplateMapper;
 import com.tqq.csmall.product.mapper.CategoryAttributeTemplateMapper;
@@ -9,7 +11,9 @@ import com.tqq.csmall.product.mapper.SPUMapper;
 import com.tqq.csmall.product.pojo.entity.*;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
+import com.tqq.csmall.product.pojo.vo.*;
 import com.tqq.csmall.product.services.IAttributeTemplateService;
+import com.tqq.csmall.product.util.PageInfoToPageDataConverter;
 import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -124,5 +129,34 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         attributeTemplate.setId(id);
         attributeTemplateMapper.updateById(attributeTemplate);
 
+    }
+
+    @Override
+    public PageData<AttributeListItemsVO> list(Integer pageNum) {
+        Integer pageSize = 5;
+        return list(pageNum, pageSize);
+    }
+
+    @Override
+    public AttributeTemplateStandardVO getStandardAttributeTemplateById(Long id) {
+        log.debug("开始处理【根据ID查询属性模板详情】的业务，参数：{}", id);
+        AttributeTemplateStandardVO queryResult = attributeTemplateMapper.getStandardAttributeTemplateById(id);
+        if (queryResult==null){
+            String message="查询指定属性模板不存在，传入的id错误";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
+        }
+        return queryResult;
+    }
+
+    @Override
+    public PageData<AttributeListItemsVO> list(Integer pageNum, Integer pageSize) {
+        log.debug("开始处理【查询属性模板列表】的业务，页码：{}，每页记录数：{}", pageNum, pageSize);
+        PageHelper.startPage(pageNum,pageSize);
+        List<AttributeListItemsVO> list = attributeTemplateMapper.list();
+        PageInfo<AttributeListItemsVO> pageInfo = new PageInfo<>(list);
+        PageData<AttributeListItemsVO> pageData = PageInfoToPageDataConverter.converter(pageInfo);
+        log.debug("查询完成，即将返回：{}", pageData);
+        return pageData;
     }
 }
