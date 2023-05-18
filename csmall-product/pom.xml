@@ -18,6 +18,11 @@
     </properties>
 
     <dependencies>
+        <!--spring boot支持的SpringMVC的web开发依赖项-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
