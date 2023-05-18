@@ -77,7 +77,7 @@ public class AlbumController {
         return JsonResult.ok();
     }
 
-    @PostMapping("/standard")
+    @GetMapping("/standard")
     @ApiOperation("查询单个相册以供修改")
     @ApiOperationSupport(order =400)
     @ApiImplicitParam(name = "id",value = "相册Id",required = true,dataType = "long")
