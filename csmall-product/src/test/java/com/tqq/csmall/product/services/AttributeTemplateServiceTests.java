@@ -32,4 +32,16 @@ public class AttributeTemplateServiceTests {
         }
     }
 
+    @Test
+    void delete(){
+        Long id = 10L;
+        try {
+            service.delete(id);
+            System.out.println("删除数据完成");
+        }catch (ServiceException e){
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

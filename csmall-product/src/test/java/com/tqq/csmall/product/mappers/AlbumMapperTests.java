@@ -34,6 +34,13 @@ public class AlbumMapperTests {
     @Test
     void update(){
         Album album = new Album();
+        album.setId(1L);
+        album.setName("redmi k50的相册");
+        album.setDescription("啥也没写");
+        album.setSort(64);
+        album.setGmtModified(LocalDateTime.now());
+        int rows = mapper.updateById(album);
+        System.out.println("修改数据完成受影响条数:"+rows);
     }
 
     @Test
