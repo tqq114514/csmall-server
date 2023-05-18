@@ -124,6 +124,18 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
+        /*检查属性模板名字是否重复*/
+        QueryWrapper<AttributeTemplate> queryWrapper2 = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper2.eq("name",attributeTemplateUpdateInfoParam.getName()).ne("id",id);
+        int countByName = attributeTemplateMapper.selectCount(queryWrapper2);
+        if (countByName > 0) {
+            String message = "修改属性模板详情失败,属性模板名称已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
         AttributeTemplate attributeTemplate = new AttributeTemplate();
         BeanUtils.copyProperties(attributeTemplateUpdateInfoParam,attributeTemplate);
         attributeTemplate.setId(id);

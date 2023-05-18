@@ -32,9 +32,27 @@ public class AdminServiceImpl implements IAdminService {
             log.warn(message);
             throw  new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
-        /*TODO 检查管理员的邮箱是否已经重复，待copy更改*/
+        /* 检查管理员的邮箱是否已经重复*/
+        QueryWrapper<Admin> queryWrapper1 = new QueryWrapper<Admin>();
+        queryWrapper1.eq("email",adminAddNewParam.getEmail());
+        int countByEmail = adminMapper.selectCount(queryWrapper1);
+        log.debug("根据管理员email统计匹配的email数量，结果：{}", countByEmail);
+        if (countByEmail>0){
+            String message = "添加管理员失败，email已经被占用！";
+            log.warn(message);
+            throw  new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
 
-        /*TODO 检查管理员的手机号码是否已经重复，待copy更改*/
+        /*检查管理员的手机号码是否已经重复，待copy更改*/
+        QueryWrapper<Admin> queryWrapper3 = new QueryWrapper<Admin>();
+        queryWrapper3.eq("phone",adminAddNewParam.getPhone());
+        int countByPhone = adminMapper.selectCount(queryWrapper3);
+        log.debug("根据管理员Phone统计匹配的Phone数量，结果：{}", countByPhone);
+        if (countByPhone>0){
+            String message = "添加管理员失败，电话号码已经被占用！";
+            log.warn(message);
+            throw  new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
 
         /*将管理员数据写入到数据库*/
         Admin admin = new Admin();

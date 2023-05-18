@@ -137,6 +137,7 @@ public class AlbumServiceImpl implements IAlbumService {
     public void updateInfoById(Long id, AlbumUpdateInfoParam albumUpdateInfoParam) {
         log.debug("开始处理【修改相册详情】的业务，ID：{}，新数据：{}", id, albumUpdateInfoParam);
 
+        /*检测id是否存在*/
         QueryWrapper<Album> queryWrapper = new QueryWrapper<>();
         /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
         /*select count(*) from pms_album where id = #{id}*/
