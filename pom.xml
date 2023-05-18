@@ -34,6 +34,7 @@
     <!--子模块清单-->
     <modules>
         <module>csmall-product</module>
+        <module>csmall-passport</module>
     </modules>
 
     <dependencyManagement>

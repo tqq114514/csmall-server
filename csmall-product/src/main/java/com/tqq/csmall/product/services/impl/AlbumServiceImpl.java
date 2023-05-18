@@ -148,6 +148,20 @@ public class AlbumServiceImpl implements IAlbumService {
             throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
+        /*检查相册名字是否重复*/
+        QueryWrapper<Album> queryWrapper2 = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper2.eq("name",albumUpdateInfoParam.getName()).ne("id",id);
+        int countByName = albumMapper.selectCount(queryWrapper2);
+        if (countByName > 0) {
+            String message = "修改相册详情失败,相册名称已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
+
+        /*执行修改*/
         Album album = new Album();
         BeanUtils.copyProperties(albumUpdateInfoParam, album);
         album.setId(id);
