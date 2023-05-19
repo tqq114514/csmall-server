@@ -18,4 +18,6 @@ public class AdminAddNewParam implements Serializable {
     private String email;
     private String description;
     private Integer enable;
+    /*由前端提供对应的多个角色ID，例如范传奇有权限1，2.6*/
+    private Long[] roleIds;
 }

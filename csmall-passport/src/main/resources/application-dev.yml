@@ -9,4 +9,4 @@ server:
 
 logging:
   level:
-    com.tqq.csmall.passport: info
+    com.tqq.csmall.passport: trace

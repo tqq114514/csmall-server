@@ -3,7 +3,9 @@ package com.tqq.csmall.passport.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tqq.csmall.passport.ex.ServiceException;
 import com.tqq.csmall.passport.mapper.AdminMapper;
+import com.tqq.csmall.passport.mapper.AdminRoleMapper;
 import com.tqq.csmall.passport.pojo.entity.Admin;
+import com.tqq.csmall.passport.pojo.entity.AdminRole;
 import com.tqq.csmall.passport.pojo.param.AdminAddNewParam;
 import com.tqq.csmall.passport.service.IAdminService;
 import com.tqq.csmall.passport.web.ServiceCode;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +21,10 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AdminServiceImpl implements IAdminService {
     @Autowired
-    AdminMapper adminMapper;
+    private AdminMapper adminMapper;
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
+
     @Override
     public void addNew(AdminAddNewParam adminAddNewParam) {
         /*检查用户名是否已经存在*/
@@ -65,5 +71,20 @@ public class AdminServiceImpl implements IAdminService {
         log.debug("准备将新的管理员数据写入到数据库，数据：{}", admin);
         adminMapper.insert(admin);
         log.debug("将新的管理员数据写入到数据库，完成！");
+
+        /*将管理员与角色的关联数据写入到数据库中*/
+        Long[] roleIds = adminAddNewParam.getRoleIds();
+        AdminRole[] adminRoles = new AdminRole[roleIds.length];
+        LocalDateTime now = LocalDateTime.now();
+        for (int i =0;i<adminRoles.length;i++){
+            AdminRole adminRole = new AdminRole();
+            adminRole.setAdminId(admin.getId());
+            adminRole.setRoleId(roleIds[i]);
+            adminRole.setGmtCreate(now);
+            adminRole.setGmtModified(now);
+            adminRoles[i] = adminRole;
+        }
+        adminRoleMapper.insertBatch(adminRoles);
+        log.debug("将新的管理员与角色的关联数据插入到数据库，完成！");
     }
 }
