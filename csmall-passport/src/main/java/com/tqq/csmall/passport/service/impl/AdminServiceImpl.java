@@ -10,6 +10,7 @@ import com.tqq.csmall.passport.pojo.param.AdminAddNewParam;
 import com.tqq.csmall.passport.service.IAdminService;
 import com.tqq.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,12 @@ public class AdminServiceImpl implements IAdminService {
         admin.setGmtCreate(LocalDateTime.now());
         admin.setGmtModified(LocalDateTime.now());
         log.debug("准备将新的管理员数据写入到数据库，数据：{}", admin);
-        adminMapper.insert(admin);
+        int rows = adminMapper.insert(admin);
+        if (rows!=1){
+            String message = "发生了某些错误，添加管理员失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("将新的管理员数据写入到数据库，完成！");
 
         /*将管理员与角色的关联数据写入到数据库中*/
@@ -84,7 +90,13 @@ public class AdminServiceImpl implements IAdminService {
             adminRole.setGmtModified(now);
             adminRoles[i] = adminRole;
         }
-        adminRoleMapper.insertBatch(adminRoles);
+        rows = adminRoleMapper.insertBatch(adminRoles);
+        if (rows!=adminRoles.length){
+            String message = "发生了某些错误，添加管理员失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
+
         log.debug("将新的管理员与角色的关联数据插入到数据库，完成！");
     }
 }

@@ -54,7 +54,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         BeanUtils.copyProperties(attributeTemplateAddNewParam, attributeTemplate);
         attributeTemplate.setGmtCreate(LocalDateTime.now());
         attributeTemplate.setGmtModified(LocalDateTime.now());
-        attributeTemplateMapper.insert(attributeTemplate);
+        int rows = attributeTemplateMapper.insert(attributeTemplate);
+        if (rows!=1){
+            String message = "发生了某些错误，添加属性模板失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("将新的属性模板数据写入到数据库，完成！");
 
     }
@@ -105,7 +110,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
-        attributeTemplateMapper.deleteById(id);
+        int rows = attributeTemplateMapper.deleteById(id);
+        if (rows!=1){
+            String message = "发生了某些错误，删除属性模板失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
 
     }
 
@@ -139,7 +149,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         AttributeTemplate attributeTemplate = new AttributeTemplate();
         BeanUtils.copyProperties(attributeTemplateUpdateInfoParam,attributeTemplate);
         attributeTemplate.setId(id);
-        attributeTemplateMapper.updateById(attributeTemplate);
+        int rows = attributeTemplateMapper.updateById(attributeTemplate);
+        if (rows!=1){
+            String message = "发生了某些错误，修改属性模板失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
 
     }
 

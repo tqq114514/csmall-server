@@ -47,7 +47,12 @@ public class BrandServiceImpl implements IBrandService {
         brand.setPositiveCommentCount(0);
         brand.setGmtCreate(LocalDateTime.now());
         brand.setGmtModified(LocalDateTime.now());
-        brandMapper.insert(brand);
+        int rows = brandMapper.insert(brand);
+        if (rows!=1){
+            String message = "发生了某些错误，添加品牌失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("将新的品牌信息数据写入到数据库，完成！");
     }
 
@@ -76,7 +81,12 @@ public class BrandServiceImpl implements IBrandService {
             throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
-        brandMapper.deleteById(id);
+        int rows = brandMapper.deleteById(id);
+        if (rows!=1){
+            String message = "发生了某些错误，删除品牌失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
 
     }
 
@@ -98,7 +108,12 @@ public class BrandServiceImpl implements IBrandService {
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandUpdateInfoParam,brand);
         brand.setId(id);
-        brandMapper.updateById(brand);
+        int rows = brandMapper.updateById(brand);
+        if (rows!=1){
+            String message = "发生了某些错误，修改品牌失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
 
     }
 }

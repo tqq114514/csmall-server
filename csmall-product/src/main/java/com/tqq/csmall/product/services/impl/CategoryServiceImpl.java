@@ -45,7 +45,12 @@ public class CategoryServiceImpl implements ICategoryService {
         BeanUtils.copyProperties(categoryAddNewParam,category);
         category.setGmtCreate(LocalDateTime.now());
         category.setGmtModified(LocalDateTime.now());
-        categoryMapper.insert(category);
+        int rows = categoryMapper.insert(category);
+        if (rows!=1){
+            String message = "发生了某些错误，添加分类失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("将新的分类信息数据写入到数据库，完成！");
     }
 
@@ -87,9 +92,12 @@ public class CategoryServiceImpl implements ICategoryService {
             throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
-
-
-        categoryMapper.deleteById(id);
+        int rows = categoryMapper.deleteById(id);
+        if (rows!=1){
+            String message = "发生了某些错误，删除分类失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
 
 
     }
@@ -112,6 +120,11 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = new Category();
         BeanUtils.copyProperties(categoryUpdateInfoParam,category);
         category.setId(id);
-        categoryMapper.updateById(category);
+        int rows = categoryMapper.updateById(category);
+        if (rows!=1){
+            String message = "发生了某些错误，修改分类失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
     }
 }

@@ -7,7 +7,9 @@ public enum ServiceCode {
     ERR_NOTFOUND(40400),
     ERR_BAD_RESPONSE(50000),
     ERR_UNKNOWN(99900),
-    ERR_DELETE(50800);
+    ERR_INSERT(52000),
+    ERR_DELETE(52100),
+    ERR_UPDATE(52200);
 
     private Integer value;
     private ServiceCode(Integer value){

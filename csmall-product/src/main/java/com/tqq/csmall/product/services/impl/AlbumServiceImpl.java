@@ -63,7 +63,12 @@ public class AlbumServiceImpl implements IAlbumService {
         album.setGmtCreate(LocalDateTime.now());
         album.setGmtModified(LocalDateTime.now());
         log.debug("准备将新的相册数据写入到数据库，数据：{}", album);
-        albumMapper.insert(album);
+        int rows = albumMapper.insert(album);
+        if (rows!=1){
+            String message = "发生了某些错误，添加相册失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("将新的相册数据写入到数据库，完成！");
 
 
@@ -117,8 +122,12 @@ public class AlbumServiceImpl implements IAlbumService {
             throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
         }
 
-        albumMapper.deleteById(id);
-
+        int rows = albumMapper.deleteById(id);
+        if (rows!=1){
+            String message = "发生了某些错误，删除相册失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
     }
 
     @Override
@@ -167,8 +176,12 @@ public class AlbumServiceImpl implements IAlbumService {
         BeanUtils.copyProperties(albumUpdateInfoParam, album);
         album.setId(id);
         album.setGmtModified(LocalDateTime.now());
-        albumMapper.updateById(album);
-
+        int rows = albumMapper.updateById(album);
+        if (rows!=1){
+            String message = "发生了某些错误，修改相册失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
     }
 
     @Override
