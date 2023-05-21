@@ -39,6 +39,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot支持Spring Security的依赖项，主要解决认证与授权的问题 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
             <!-- 基于MyBatis或MyBatis Plus的分页查询框架 -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>

@@ -1,15 +1,20 @@
 package com.tqq.csmall.product.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.mapper.BrandCategoryMapper;
 import com.tqq.csmall.product.mapper.BrandMapper;
+import com.tqq.csmall.product.pojo.entity.Album;
 import com.tqq.csmall.product.pojo.entity.Brand;
 import com.tqq.csmall.product.pojo.entity.BrandCategory;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
+import com.tqq.csmall.product.pojo.vo.*;
 import com.tqq.csmall.product.services.IBrandService;
 
+import com.tqq.csmall.product.util.PageInfoToPageDataConverter;
 import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -105,6 +111,18 @@ public class BrandServiceImpl implements IBrandService {
             throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
         }
 
+        /*检查品牌名字是否重复*/
+        QueryWrapper<Brand> queryWrapper2 = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper2.eq("name",brandUpdateInfoParam.getName()).ne("id",id);
+        int countByName = brandMapper.selectCount(queryWrapper2);
+        if (countByName > 0) {
+            String message = "修改品牌失败,品牌名称已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandUpdateInfoParam,brand);
         brand.setId(id);
@@ -115,5 +133,32 @@ public class BrandServiceImpl implements IBrandService {
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
 
+    }
+
+    @Override
+    public PageData<BrandListItemsVO> list(Integer pageNum) {
+        Integer pageSize = 5;
+        return list(pageNum, pageSize);
+    }
+
+    @Override
+    public PageData<BrandListItemsVO> list(Integer pageNum, Integer pageSize) {
+        log.debug("开始处理【查询品牌列表】的业务，页码：{}，每页记录数：{}", pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<BrandListItemsVO> list = brandMapper.brandList();
+        PageInfo<BrandListItemsVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.converter(pageInfo);
+    }
+
+    @Override
+    public BrandStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据ID查询相册详情】的业务，参数：{}", id);
+        BrandStandardVO queryResult = brandMapper.getStandardById(id);
+        if (queryResult==null){
+            String message="查询指定品牌不存在，传入的id错误";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
+        }
+        return queryResult;
     }
 }

@@ -13,6 +13,11 @@
     <version>0.0.1</version>
 
     <dependencies>
+        <!-- Spring Boot支持Spring Security的依赖项，主要解决认证与授权的问题 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>

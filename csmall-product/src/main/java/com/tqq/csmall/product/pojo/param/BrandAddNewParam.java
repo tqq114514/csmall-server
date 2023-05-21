@@ -22,7 +22,7 @@ public class BrandAddNewParam implements Serializable {
     @ApiModelProperty(value = "品牌标签，是url",required = true,example = "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png")
     private String logo;
 
-    @ApiModelProperty(value = "品牌描述",required = true,example = "世界知名手机品牌")
+    @ApiModelProperty(value = "品牌简介",required = true,example = "世界知名手机品牌")
     private String description;
 
     @ApiModelProperty(value = "关键词",required = true,example = "苹果,apple,259g,5999")
