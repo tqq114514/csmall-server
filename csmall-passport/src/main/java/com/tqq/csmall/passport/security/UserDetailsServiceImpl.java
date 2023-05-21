@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.debug("用户名匹配成功！准备返回此用户名匹配的UserDetails类型的对象");
         UserDetails userDetails = User.builder()
                 .username(loginInfo.getUsername())
-                .password(loginInfo.getUsername())
+                .password(loginInfo.getPassword())
                 .disabled(loginInfo.getEnable()==0) /*账户状态是否禁用*/
                 .accountLocked(false)
                 .accountExpired(false) /*账户状态是否过期*/

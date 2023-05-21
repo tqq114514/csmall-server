@@ -4,6 +4,8 @@
 
 <mapper namespace="com.tqq.csmall.passport.mapper.AdminMapper">
     <select id="getLoginInfoByUsername" resultType="com.tqq.csmall.passport.pojo.vo.AdminLoginInfoVO">
-        select username, password, enable from ams_admin where username=#{username}
+        SELECT username, password, enable
+        FROM ams_admin
+        WHERE username=#{username}
     </select>
 </mapper>

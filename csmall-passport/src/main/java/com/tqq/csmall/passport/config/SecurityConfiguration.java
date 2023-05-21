@@ -38,4 +38,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated();
         http.formLogin();
     }
+
 }
