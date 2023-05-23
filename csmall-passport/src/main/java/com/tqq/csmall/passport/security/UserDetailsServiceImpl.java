@@ -4,11 +4,16 @@ import com.tqq.csmall.passport.mapper.AdminMapper;
 import com.tqq.csmall.passport.pojo.vo.AdminLoginInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Slf4j
 @Service
@@ -27,15 +32,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
         log.debug("用户名匹配成功！准备返回此用户名匹配的UserDetails类型的对象");
-        UserDetails userDetails = User.builder()
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        GrantedAuthority authority = new SimpleGrantedAuthority("临时权限");
+        authorities.add(authority);
+        AdminDetails userDetails = new AdminDetails(
+                loginInfo.getId(),loginInfo.getUsername(),loginInfo.getPassword(),
+                loginInfo.getEnable()==1,authorities
+        );
+        /*UserDetails userDetails = User.builder()
                 .username(loginInfo.getUsername())
                 .password(loginInfo.getPassword())
-                .disabled(loginInfo.getEnable()==0) /*账户状态是否禁用*/
+                .disabled(loginInfo.getEnable()==0) *//*账户状态是否禁用*//*
                 .accountLocked(false)
-                .accountExpired(false) /*账户状态是否过期*/
-                .credentialsExpired(false) /*账户的凭证是否过期*/
+                .accountExpired(false) *//*账户状态是否过期*//*
+                .credentialsExpired(false) *//*账户的凭证是否过期*//*
                 .authorities("临时使用的权限")
-                .build();
+                .build();*/
         log.debug("即将向Spring Security返回UserDetails类型的对象：{}", userDetails);
         return userDetails;
     }

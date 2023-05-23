@@ -4,6 +4,11 @@ import com.tqq.csmall.passport.ex.ServiceException;
 import com.tqq.csmall.passport.web.JsonResult;
 import com.tqq.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,28 +31,6 @@ public class GlobalExceptionHandler {
         /*return new JsonResult().setState(1).setMessage(exception.getMessage());*/
         /*链式方法解决了代码的可读性问题，解决构造方法多参数时，各参数意义不明确的问题*/
         return JsonResult.fail(exception.getServiceCode(), exception.getMessage());
-    }
-
-    @ExceptionHandler
-    public JsonResult handleNullPointerException(NullPointerException e) {
-        log.warn("程序运行过程中出现了NullPointerException，将统一处理！");
-        log.warn("异常信息：{}", e.getMessage());
-
-        /*JsonResult jsonResult = new JsonResult();
-        jsonResult.setState(2);
-        jsonResult.setMessage(e.getMessage());
-        return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR_BAD_RESPONSE,e.getMessage());
-    }
-
-    @ExceptionHandler
-    public JsonResult handleRuntimeException(RuntimeException exception){
-        log.warn("发生了RuntimeException异常，异常为：{}",exception.getMessage());
-        /*JsonResult jsonResult = new JsonResult();
-        jsonResult.setState(3);
-        jsonResult.setMessage(exception.getMessage());
-        return jsonResult;*/
-        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler
@@ -79,6 +62,18 @@ public class GlobalExceptionHandler {
         }
         return messageList;*/
     }
+    // 如果@ExceptionHandler没有配置参数，则以方法参数的异常为准，来处理异常
+    // 如果@ExceptionHandler配置了参数，则只处理此处配置的异常
+    @ExceptionHandler({
+            InternalAuthenticationServiceException.class,
+            BadCredentialsException.class
+    })
+    public JsonResult handleAuthenticationException(AuthenticationException e){
+        log.warn("程序运行过程中出现了AuthenticationException，将统一处理！");
+        log.warn("异常：", e);
+        String message = "登录失败，用户名或密码错误！";
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED, message);
+    }
 
     /*当删除的id不合法为负数时，处理异常*/
     @ExceptionHandler
@@ -98,11 +93,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public JsonResult handleServiceException(Throwable throwable){
+    public JsonResult handleDisabledException(DisabledException e) {
+        log.warn("程序运行过程中出现了DisabledException，将统一处理！");
+        log.warn("异常：", e);
+        String message = "登录失败，账号已经被禁用！";
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED_DISABLE, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult handleThrowable(Throwable throwable){
         log.warn("发生了throwable异常，异常为：{}",throwable.getMessage());
         /*e.printStackTrace();导致线程阻塞，正式项目上线后禁止使用e.printStackTrace()*/
         log.warn("异常：",throwable);
-        String message = "服务器忙，请稍后再试";
+        String message = "服务器忙，请稍后再试【在开发过程中，如果看到此提示，应该检查服务器端的控制台，分析异常，并在全局异常处理器中补充处理对应异常的方法】";
 
         /*JsonResult jsonResult = new JsonResult();
         jsonResult.setState(99);

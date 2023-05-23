@@ -13,6 +13,11 @@
     <version>0.0.1</version>
 
     <dependencies>
+        <!--fastjson:实现对象与json的快速转换-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
         <!-- Spring Boot支持Spring Security的依赖项，主要解决认证与授权的问题 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

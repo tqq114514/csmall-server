@@ -7,12 +7,19 @@ import com.tqq.csmall.passport.mapper.AdminRoleMapper;
 import com.tqq.csmall.passport.pojo.entity.Admin;
 import com.tqq.csmall.passport.pojo.entity.AdminRole;
 import com.tqq.csmall.passport.pojo.param.AdminAddNewParam;
+import com.tqq.csmall.passport.pojo.param.AdminLoginInfoParam;
 import com.tqq.csmall.passport.service.IAdminService;
 import com.tqq.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +32,8 @@ public class AdminServiceImpl implements IAdminService {
     private AdminMapper adminMapper;
     @Autowired
     private AdminRoleMapper adminRoleMapper;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Override
     public void addNew(AdminAddNewParam adminAddNewParam) {
@@ -98,5 +107,22 @@ public class AdminServiceImpl implements IAdminService {
         }
 
         log.debug("将新的管理员与角色的关联数据插入到数据库，完成！");
+    }
+
+    @Override
+    public void login(AdminLoginInfoParam adminLoginInfoParam) {
+        log.debug("开始处理【管理员登录】的业务，参数：{}", adminLoginInfoParam);
+        /*创建认证时所需的参数对象*/
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                adminLoginInfoParam.getUsername(),
+                adminLoginInfoParam.getPassword()
+        );
+        /*执行认证，并获取认证结果*/
+        Authentication authenticateResult = authenticationManager.authenticate(authentication);
+        log.debug("登录验证成功");
+
+        /*将认证结果放入安全上下文中*/
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authenticateResult);
     }
 }

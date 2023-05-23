@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.tqq.csmall.passport.mapper.AdminMapper">
-    <select id="getLoginInfoByUsername" resultType="com.tqq.csmall.passport.pojo.vo.AdminLoginInfoVO">
-        SELECT username, password, enable
+    <!--AdminLoginInfoVO getLoginInfoByUsername(String username);-->
+    <select id="AdminLoginInfoVO" resultMap="LoginInfoResultMap">
+        SELECT ams_admin.id,username,password,enable,ams_permission.value
         FROM ams_admin
-        WHERE username=#{username}
+                 left join ams_admin_role on ams_admin.id = ams_admin_role.admin_id
+                 left join ams_role_permission on  ams_admin_role.role_id = ams_role_permission.id
+                 left join ams_permission on ams_role_permission.permission_id = ams_permission.id
+        WHERE username=#{username};
     </select>
+    <!-- id标签：配置主键的列与属性的对应关系 -->
+    <!-- result标签：配置普通的列与属性的对应关系 -->
+    <!-- resultMap标签：指导MyBatis封装查询结果 -->
+    <!-- resultMap标签的id属性：自定义名称，也是select标签上使用resultMap属性的值 -->
+    <!-- resultMap标签的type属性：封装查询结果的类型的全限定名 -->
+    <resultMap id="LoginInfoResultMap" type="com.tqq.csmall.passport.pojo.vo.AdminLoginInfoVO">
+        <!-- id标签：配置主键的列与属性的对应关系 -->
+        <!-- result标签：配置普通的列与属性的对应关系 -->
+        <!-- collection标签：配置List集合类型的属性与查询结果中的数据的对应关系 -->
+        <!-- collection标签的ofType属性：集合中的元素类型，取值为类型的全限定名 -->
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="enable" property="enable"/>
+        <collection property="permissions" ofType="String">
+            <!-- constructor标签：通过构造方法来创建对象 -->
+            <!--String中有自己创建自己的构造方法-->
+            <constructor>
+                <!-- arg标签：配置构造方法的参数，如果构造方法有多个参数，依次使用多个此标签 -->
+                <arg column="value"></arg>
+            </constructor>
+
+        </collection>
+    </resultMap>
 </mapper>
