@@ -4,6 +4,7 @@ import com.tqq.csmall.passport.ex.ServiceException;
 import com.tqq.csmall.passport.web.JsonResult;
 import com.tqq.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -99,6 +100,15 @@ public class GlobalExceptionHandler {
         String message = "登录失败，账号已经被禁用！";
         return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED_DISABLE, message);
     }
+
+    @ExceptionHandler
+    public JsonResult handleAccessDeniedException(AccessDeniedException e) {
+        log.warn("程序运行过程中出现了AccessDeniedException，将统一处理！");
+        log.warn("异常：", e);
+        String message = "登录失败，你所登录的账号无此权限！";
+        return JsonResult.fail(ServiceCode.ERR_FORBIDDEN, message);
+    }
+
 
     @ExceptionHandler
     public JsonResult handleThrowable(Throwable throwable){

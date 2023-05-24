@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class RoleController {
     private IRoleService iRoleService;
 
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('/ams/admin/read')")
     @ApiOperation("查询角色列表以供选择")
     @ApiOperationSupport(order = 100)
     public JsonResult list(){

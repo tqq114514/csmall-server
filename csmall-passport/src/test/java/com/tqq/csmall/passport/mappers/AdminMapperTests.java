@@ -27,4 +27,11 @@ public class AdminMapperTests {
         System.out.println("插入数据完成，受影响的行数：" + rows);
         System.out.println("插入数据之后，参数：" + admin);
     }
+
+    @Test
+    void getLoginInfoByUsername() {
+        String username = "super_admin";
+        Object queryResult = adminMapper.getLoginInfoByUsername(username);
+        System.out.println("根据【username=" + username + "】查询数据完成，结果：" + queryResult);
+    }
 }
