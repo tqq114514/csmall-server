@@ -10,3 +10,6 @@ server:
 logging:
   level:
     com.tqq.csmall.product: info
+csmall:
+  jwt:
+    secret-key: afdvdsbvdfbfddgfrfsafsaf23rff23r3

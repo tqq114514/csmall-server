@@ -1,6 +1,8 @@
 package com.tqq.csmall.passport.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.passport.ex.ServiceException;
 import com.tqq.csmall.passport.mapper.AdminMapper;
 import com.tqq.csmall.passport.mapper.AdminRoleMapper;
@@ -8,8 +10,11 @@ import com.tqq.csmall.passport.pojo.entity.Admin;
 import com.tqq.csmall.passport.pojo.entity.AdminRole;
 import com.tqq.csmall.passport.pojo.param.AdminAddNewParam;
 import com.tqq.csmall.passport.pojo.param.AdminLoginInfoParam;
+import com.tqq.csmall.passport.pojo.vo.AdminListItemsVO;
+import com.tqq.csmall.passport.pojo.vo.PageData;
 import com.tqq.csmall.passport.security.AdminDetails;
 import com.tqq.csmall.passport.service.IAdminService;
+import com.tqq.csmall.passport.util.PageInfoToPageDataConverter;
 import com.tqq.csmall.passport.web.ServiceCode;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.jsonwebtoken.Jwts;
@@ -25,10 +30,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -144,5 +146,21 @@ public class AdminServiceImpl implements IAdminService {
         }
         log.debug("将新的管理员与角色的关联数据插入到数据库，完成！");
     }
+
+    @Override
+    public PageData<AdminListItemsVO> list(Integer pageNum) {
+        Integer pageSize = 5;
+        return list(pageNum, pageSize);
+    }
+
+    @Override
+    public PageData<AdminListItemsVO> list(Integer pageNum, Integer pageSize) {
+        log.debug("开始处理【查询管理员列表】的业务，页码：{}，每页记录数：{}", pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<AdminListItemsVO> list = adminMapper.adminList();
+        PageInfo<AdminListItemsVO> pageInfo = new PageInfo<>(list);
+        return PageInfoToPageDataConverter.converter(pageInfo);
+    }
+
 
 }

@@ -1,19 +1,21 @@
 package com.tqq.csmall.passport.pojo.vo;
 
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 import java.io.Serializable;
-import java.util.List;
-
 
 @Data
 @Accessors(chain = true)
-public class AdminLoginInfoVO implements Serializable {
+public class AdminListItemsVO implements Serializable {
 
     private Long id;
     private String username;
-    private String password;
+    private String nickname;
+    private String avatar;
+    private String phone;
+    private String email;
+    private String description;
     private Integer enable;
-    private List<String> permissions;
 
 }

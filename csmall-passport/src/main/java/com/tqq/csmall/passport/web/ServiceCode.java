@@ -18,7 +18,10 @@ public enum ServiceCode {
     ERR_INSERT(50000),
     ERR_DELETE(50100),
     ERR_UPDATE(50200),
-    ERR_UNKNOWN(99999)
+    ERR_JWT_EXPIRED(60000),
+    ERR_JWT_MALFORMED(60100),
+    ERR_JWT_SIGNATURE(60200),
+    ERR_UNKNOWN(99999),
     ;
 
     private Integer value;

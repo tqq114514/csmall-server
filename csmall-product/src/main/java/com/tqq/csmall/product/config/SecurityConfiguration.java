@@ -1,9 +1,9 @@
-package com.tqq.csmall.passport.config;
+package com.tqq.csmall.product.config;
 
-import com.tqq.csmall.passport.filter.JwtAuthorizationFilter;
-import com.tqq.csmall.passport.web.JsonResult;
-import com.tqq.csmall.passport.web.ServiceCode;
 import com.alibaba.fastjson.JSON;
+import com.tqq.csmall.product.filter.JwtAuthorizationFilter;
+import com.tqq.csmall.product.web.JsonResult;
+import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,17 +36,6 @@ import java.io.PrintWriter;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 开启全局的基于方法的安全检查，即：在方法上添加注解来检查权限
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // return NoOpPasswordEncoder.getInstance();
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -94,7 +83,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/**/*.js",
                 "/swagger-resources",
                 "/v2/api-docs",
-                "/admin/login"
         };
 
         // 配置授权访问

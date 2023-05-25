@@ -70,7 +70,7 @@ public class BrandController {
     @ApiOperation("查询品牌列表")
     @ApiOperationSupport(order =410)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum",value = "页码",paramType = "querry")
+            @ApiImplicitParam(name = "pageNum",value = "页码",paramType = "query")
     })
     public JsonResult list(@Range(min = 1,message = "查询相册列表失败，提供的页码值有误！") Integer pageNum) {
         log.debug("开始处理【查询品牌列表】的请求，页码：{}", pageNum);

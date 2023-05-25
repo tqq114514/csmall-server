@@ -1,15 +1,14 @@
-package com.tqq.csmall.passport.filter;
+package com.tqq.csmall.product.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.tqq.csmall.passport.security.LoginPrincipal;
-import com.tqq.csmall.passport.web.JsonResult;
-import com.tqq.csmall.passport.web.ServiceCode;
+import com.tqq.csmall.product.security.LoginPrincipal;
+import com.tqq.csmall.product.web.JsonResult;
+import com.tqq.csmall.product.web.ServiceCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +16,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**

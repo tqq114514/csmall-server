@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-/*mybatisplus只使用增删改，改先自己写*/
+/*mybatisplus只使用增删改，查先自己写*/
 public interface AlbumMapper extends BaseMapper<Album> {
     List<AlbumListItemsVO> albumList();
     AlbumStandardVO getStandardById(Long id);
