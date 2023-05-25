@@ -1,12 +1,24 @@
 package com.tqq.csmall.passport.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tqq.csmall.passport.pojo.entity.AdminRole;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * 处理管理员与角色的关联数据的Mapper接口
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Repository
 public interface AdminRoleMapper extends BaseMapper<AdminRole> {
 
-    /*因为一个管理员对应多种权限，则需要使用批量写入，提供一个数组，供批量写入*/
-    int insertBatch(AdminRole[] adminRoleArray);
+    /**
+     * 批量插入管理员与角色的关联数据
+     *
+     * @param adminRoleList 若干个管理员与角色的关联数据的集合
+     * @return 受影响的行数
+     */
+    int insertBatch(AdminRole[] adminRoleList);
+
 }

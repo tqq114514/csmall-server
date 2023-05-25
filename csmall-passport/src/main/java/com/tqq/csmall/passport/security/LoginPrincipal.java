@@ -1,4 +1,4 @@
-package com.tqq.csmall.passport.pojo.param;
+package com.tqq.csmall.passport.security;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-public class AdminLoginInfoParam implements Serializable {
+public class LoginPrincipal implements Serializable {
 
+    private Long id;
     private String username;
-    private String password;
 
 }

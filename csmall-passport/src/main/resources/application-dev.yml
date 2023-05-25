@@ -1,12 +1,17 @@
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/mall_ams?useUnicode=true&characterEncoding=utf-8&ServerTimezone=Asia/Shanghai
-    username: root
-    password: root
-
 server:
   port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mall_ams?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
 
 logging:
   level:
     com.tqq.csmall.passport: trace
+
+csmall:
+  jwt:
+    secret-key: afdvdsbvdfbfddgfrfsafsaf23rff23r3
+    duration-in-minute: 43200

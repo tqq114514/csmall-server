@@ -13,6 +13,11 @@
     <version>0.0.1</version>
 
     <dependencies>
+        <!--用于在客户端保存加密的Token-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
         <!--fastjson:实现对象与json的快速转换-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -66,11 +71,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
         </dependency>
 
         <dependency>
