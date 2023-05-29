@@ -1,7 +1,7 @@
 package com.tqq.csmall.product.services;
 
 
-import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
 import com.tqq.csmall.commons.pojo.vo.PageData;
