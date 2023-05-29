@@ -2,9 +2,8 @@ package com.tqq.csmall.product.ex.handler;
 
 import com.tqq.csmall.commons.ex.ServiceException;
 import com.tqq.csmall.commons.web.ServiceCode;
-import com.tqq.csmall.product.web.JsonResult;
+import com.tqq.csmall.commons.web.JsonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.validation.BindException;
@@ -12,9 +11,6 @@ import org.springframework.validation.BindException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
 
 
 @Slf4j

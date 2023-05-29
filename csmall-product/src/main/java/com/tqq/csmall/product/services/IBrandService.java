@@ -2,13 +2,10 @@ package com.tqq.csmall.product.services;
 
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
-import com.tqq.csmall.product.pojo.vo.AlbumListItemsVO;
 import com.tqq.csmall.product.pojo.vo.BrandListItemsVO;
 import com.tqq.csmall.product.pojo.vo.BrandStandardVO;
-import com.tqq.csmall.product.pojo.vo.PageData;
+import com.tqq.csmall.commons.pojo.vo.PageData;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 public interface IBrandService {

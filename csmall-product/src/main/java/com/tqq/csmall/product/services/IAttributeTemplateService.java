@@ -1,5 +1,6 @@
 package com.tqq.csmall.product.services;
 
+import com.tqq.csmall.commons.pojo.vo.PageData;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.*;

@@ -1,11 +1,12 @@
 package com.tqq.csmall.product.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.tqq.csmall.commons.pojo.vo.PageData;
 import com.tqq.csmall.product.pojo.param.BrandAddNewParam;
 import com.tqq.csmall.product.pojo.param.BrandUpdateInfoParam;
 import com.tqq.csmall.product.pojo.vo.*;
 import com.tqq.csmall.product.services.IBrandService;
-import com.tqq.csmall.product.web.JsonResult;
+import com.tqq.csmall.commons.web.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

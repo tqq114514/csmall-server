@@ -2,7 +2,7 @@ package com.tqq.csmall.passport.controller;
 
 import com.tqq.csmall.passport.pojo.vo.RoleListItemVO;
 import com.tqq.csmall.passport.service.IRoleService;
-import com.tqq.csmall.passport.web.JsonResult;
+import com.tqq.csmall.commons.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

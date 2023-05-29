@@ -4,7 +4,7 @@ package com.tqq.csmall.product.services;
 import com.tqq.csmall.product.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.AlbumAddNewParam;
 import com.tqq.csmall.product.pojo.param.AlbumUpdateInfoParam;
-import com.tqq.csmall.product.pojo.vo.PageData;
+import com.tqq.csmall.commons.pojo.vo.PageData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
