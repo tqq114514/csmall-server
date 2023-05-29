@@ -1,6 +1,6 @@
 package com.tqq.csmall.passport.service;
 
-import com.tqq.csmall.passport.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
 import com.tqq.csmall.passport.pojo.param.AdminAddNewParam;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
