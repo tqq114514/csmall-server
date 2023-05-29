@@ -13,6 +13,11 @@
     <version>0.0.1</version>
 
     <dependencies>
+        <!--项目共同文件的依赖-->
+        <dependency>
+            <groupId>com.tqq</groupId>
+            <artifactId>csmall-commons</artifactId>
+        </dependency>
         <!--用于在客户端保存加密的Token-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

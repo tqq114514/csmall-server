@@ -6,6 +6,8 @@ spring:
       max-active: 10
   profiles:
     active: dev
+  jackson:
+    default-property-inclusion: non_null
 
 knife4j:
   enable: true

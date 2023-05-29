@@ -3,7 +3,8 @@ package com.tqq.csmall.product.services.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.product.mapper.BrandCategoryMapper;
 import com.tqq.csmall.product.mapper.BrandMapper;
 import com.tqq.csmall.product.pojo.entity.Album;
@@ -15,7 +16,6 @@ import com.tqq.csmall.product.pojo.vo.*;
 import com.tqq.csmall.product.services.IBrandService;
 
 import com.tqq.csmall.product.util.PageInfoToPageDataConverter;
-import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

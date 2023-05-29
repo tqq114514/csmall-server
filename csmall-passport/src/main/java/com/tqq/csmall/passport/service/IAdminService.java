@@ -18,5 +18,6 @@ public interface IAdminService {
 
     PageData<AdminListItemsVO> list(Integer pageNum);
     PageData<AdminListItemsVO> list(Integer pageNum,Integer pageSize);
+    void delete(Long id);
 
 }

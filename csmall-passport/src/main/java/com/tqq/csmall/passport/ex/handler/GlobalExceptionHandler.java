@@ -1,8 +1,8 @@
 package com.tqq.csmall.passport.ex.handler;
 
-import com.tqq.csmall.passport.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.passport.web.JsonResult;
-import com.tqq.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;

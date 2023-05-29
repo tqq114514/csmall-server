@@ -1,5 +1,6 @@
 package com.tqq.csmall.product.web;
 
+import com.tqq.csmall.commons.web.ServiceCode;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

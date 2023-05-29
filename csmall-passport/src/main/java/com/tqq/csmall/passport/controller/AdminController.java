@@ -7,7 +7,6 @@ import com.tqq.csmall.passport.pojo.vo.PageData;
 import com.tqq.csmall.passport.security.LoginPrincipal;
 import com.tqq.csmall.passport.service.IAdminService;
 import com.tqq.csmall.passport.web.JsonResult;
-import com.tqq.csmall.passport.web.ServiceCode;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Slf4j
@@ -59,7 +55,7 @@ public class AdminController {
     @GetMapping("/list")
     @ApiOperation("查询管理员列表")
     @PreAuthorize("hasAuthority('/ams/admin/read')")
-    @ApiOperationSupport(order = 420)
+    @ApiOperationSupport(order = 220)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum",value = "页码",paramType = "query")
     })
@@ -70,5 +66,15 @@ public class AdminController {
         }
         PageData<AdminListItemsVO> pageData = adminService.list(pageNum);
         return JsonResult.ok(pageData);
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ApiOperation("根据ID删除管理员")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id",value = "管理员Id",required = true,dataType = "long")
+    public JsonResult delete(@Range(min = 1,message = "ID值不合法") @RequestParam Long id){
+        log.debug("开始处理【根据ID删除管理员】的请求,参数：{}",id);
+        adminService.delete(id);
+        return JsonResult.ok();
     }
 }

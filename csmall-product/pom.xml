@@ -13,11 +13,17 @@
     <version>0.0.1</version>
 
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
-
     <dependencies>
+        <!--项目共同文件的依赖-->
+        <dependency>
+            <groupId>com.tqq</groupId>
+            <artifactId>csmall-commons</artifactId>
+        </dependency>
+        <!-- Spring Boot支持Spring AOP的依赖项，主要解决横切关注问题 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
         <!--用于在客户端保存加密的Token-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

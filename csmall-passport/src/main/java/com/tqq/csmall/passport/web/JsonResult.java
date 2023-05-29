@@ -1,5 +1,6 @@
 package com.tqq.csmall.passport.web;
 
+import com.tqq.csmall.commons.web.ServiceCode;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;

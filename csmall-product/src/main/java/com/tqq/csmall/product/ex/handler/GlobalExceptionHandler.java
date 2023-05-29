@@ -1,8 +1,8 @@
 package com.tqq.csmall.product.ex.handler;
 
-import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.product.web.JsonResult;
-import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;

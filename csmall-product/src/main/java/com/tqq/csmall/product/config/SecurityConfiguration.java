@@ -1,12 +1,11 @@
 package com.tqq.csmall.product.config;
 
 import com.alibaba.fastjson.JSON;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.product.filter.JwtAuthorizationFilter;
 import com.tqq.csmall.product.web.JsonResult;
-import com.tqq.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

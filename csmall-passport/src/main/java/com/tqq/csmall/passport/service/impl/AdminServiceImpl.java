@@ -3,7 +3,8 @@ package com.tqq.csmall.passport.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tqq.csmall.passport.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.passport.mapper.AdminMapper;
 import com.tqq.csmall.passport.mapper.AdminRoleMapper;
 import com.tqq.csmall.passport.pojo.entity.Admin;
@@ -15,7 +16,6 @@ import com.tqq.csmall.passport.pojo.vo.PageData;
 import com.tqq.csmall.passport.security.AdminDetails;
 import com.tqq.csmall.passport.service.IAdminService;
 import com.tqq.csmall.passport.util.PageInfoToPageDataConverter;
-import com.tqq.csmall.passport.web.ServiceCode;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -160,6 +160,41 @@ public class AdminServiceImpl implements IAdminService {
         List<AdminListItemsVO> list = adminMapper.adminList();
         PageInfo<AdminListItemsVO> pageInfo = new PageInfo<>(list);
         return PageInfoToPageDataConverter.converter(pageInfo);
+    }
+
+    @Override
+    public void delete(Long id) {
+        log.debug("开始处理【根据id删除管理员业务】，参数：{}", id);
+
+        QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
+        /*这里的queryWrapper.eq就相当于查询条件where id = #{id}*/
+        /*select count(*) from pms_album where id = #{id}*/
+        queryWrapper.eq("id", id);
+        int countById = adminMapper.selectCount(queryWrapper);
+        log.debug("根据管理员ID统计匹配的管理员数量，结果：{}", countById);
+        if (countById == 0) {
+            String message = "删除管理员失败,请求的管理员id不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOTFOUND,message);
+        }
+
+        /*检测管理员角色表中是否关联了该管理员*/
+        QueryWrapper<AdminRole> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("admin_id",id);
+        int countByAdminId = adminRoleMapper.selectCount(queryWrapper1);
+        log.debug("根据管理员ID统计匹配的管理员数量，结果：{}", countByAdminId);
+        if (countByAdminId>0){
+            String message = "删除管理员不予以执行，该管理员有对应的角色未处理";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT,message);
+        }
+
+        int rows = adminMapper.deleteById(id);
+        if (rows!=1){
+            String message = "发生了某些错误，删除管理员失败";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
     }
 
 

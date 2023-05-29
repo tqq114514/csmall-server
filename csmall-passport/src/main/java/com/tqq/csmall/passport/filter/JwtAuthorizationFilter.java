@@ -1,9 +1,9 @@
 package com.tqq.csmall.passport.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.tqq.csmall.commons.web.ServiceCode;
 import com.tqq.csmall.passport.security.LoginPrincipal;
 import com.tqq.csmall.passport.web.JsonResult;
-import com.tqq.csmall.passport.web.ServiceCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
