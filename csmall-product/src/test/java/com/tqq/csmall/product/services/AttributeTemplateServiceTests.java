@@ -1,7 +1,7 @@
 package com.tqq.csmall.product.services;
 
 
-import com.tqq.csmall.product.ex.ServiceException;
+import com.tqq.csmall.commons.ex.ServiceException;
 import com.tqq.csmall.product.pojo.param.AttributeTemplateAddNewParam;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

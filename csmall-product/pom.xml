@@ -19,6 +19,11 @@
             <groupId>com.tqq</groupId>
             <artifactId>csmall-commons</artifactId>
         </dependency>
+        <!--redis的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- Spring Boot支持Spring AOP的依赖项，主要解决横切关注问题 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

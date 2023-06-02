@@ -50,6 +50,12 @@
                 <artifactId>csmall-commons</artifactId>
                 <version>${csmall-commons.version}</version>
             </dependency>
+            <!--redis的依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
             <!-- Spring Boot支持Spring AOP的依赖项，主要解决横切关注问题 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

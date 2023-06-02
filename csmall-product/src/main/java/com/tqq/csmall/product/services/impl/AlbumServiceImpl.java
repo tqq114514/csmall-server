@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tqq.csmall.commons.ex.ServiceException;
 import com.tqq.csmall.commons.web.ServiceCode;
+import com.tqq.csmall.product.cache.IAlbumCacheRepository;
 import com.tqq.csmall.product.mapper.AlbumMapper;
 import com.tqq.csmall.product.mapper.PictureMapper;
 import com.tqq.csmall.product.mapper.SKUMapper;
@@ -130,10 +131,13 @@ public class AlbumServiceImpl implements IAlbumService {
         }
     }
 
+    @Autowired
+    private IAlbumCacheRepository albumCacheRepository;
     @Override
     public AlbumStandardVO getStandardById(Long id) {
         log.debug("开始处理【根据ID查询相册详情】的业务，参数：{}", id);
-        AlbumStandardVO queryResult = albumMapper.getStandardById(id);
+        /*AlbumStandardVO queryResult = albumMapper.getStandardById(id);*/
+        AlbumStandardVO queryResult = albumCacheRepository.getStandardById(id);
         if (queryResult==null){
             String message="查询指定相册不存在，传入的id错误";
             log.warn(message);

@@ -27,6 +27,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,6 +47,8 @@ public class AdminServiceImpl implements IAdminService {
     private AdminRoleMapper adminRoleMapper;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public AdminServiceImpl() {
         log.debug("创建业务类对象：AdminServiceImpl");
@@ -107,17 +110,42 @@ public class AdminServiceImpl implements IAdminService {
             throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
         }
 
-        // TODO 检查管理员手机号码是否被占用，如果被占用，则抛出异常
-        // TODO 检查管理员电子邮箱是否被占用，如果被占用，则抛出异常
+        //  检查管理员手机号码是否被占用，如果被占用，则抛出异常
+        QueryWrapper<Admin> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("phone", adminAddNewParam.getPhone());
+        int countByPhone = adminMapper.selectCount(queryWrapper1);
+        log.debug("根据管理员手机号统计匹配的管理员数量，结果：{}", countByPhone);
+        if (countByPhone > 0) {
+            String message = "添加管理员失败，手机号码已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // 检查管理员电子邮箱是否被占用，如果被占用，则抛出异常
+        QueryWrapper<Admin> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("email", adminAddNewParam.getEmail());
+        int countByEmail = adminMapper.selectCount(queryWrapper2);
+        log.debug("根据管理员邮箱统计匹配的管理员数量，结果：{}", countByEmail);
+        if (countByEmail > 0) {
+            String message = "添加管理员失败，邮箱已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
 
         // 将管理员数据写入到数据库中
         Admin admin = new Admin();
+        /*复制属性*/
         BeanUtils.copyProperties(adminAddNewParam, admin);
         admin.setLastLoginIp(null);
         admin.setLoginCount(0);
         admin.setGmtLastLogin(null);
         admin.setGmtCreate(LocalDateTime.now());
         admin.setGmtModified(LocalDateTime.now());
+        /*从Admin对象中取出原密码，执行加密，再将密文存入到Admin对象中*/
+        String rawPassword = admin.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        admin.setPassword(encodedPassword);
+        /*调用Mapper对象的insert()执行插入*/
         int rows = adminMapper.insert(admin);
         if (rows != 1) {
             String message = "添加管理员失败，服务器忙，请稍后再试！";
